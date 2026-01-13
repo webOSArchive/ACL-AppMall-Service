@@ -339,9 +339,9 @@ function getCategories() {
     $xml .= "  <module>browsecategories</module>\n";
 
     foreach ($CATEGORIES as $cat) {
-        $xml .= "  <category>\n";
-        $xml .= "    <catLabel>" . escapeXml($cat['id']) . "</catLabel>\n";
-        $xml .= "    <category>" . escapeXml($cat['name']) . "</category>\n";
+        $catId = escapeXml($cat['id']);
+        $xml .= "  <category id=\"$catId\">\n";
+        $xml .= "    <catLabel>" . escapeXml($cat['name']) . "</catLabel>\n";
         $xml .= "    <thumbnail>" . escapeXml($cat['icon'] ?? '') . "</thumbnail>\n";
 
         // Include subcategory IDs
@@ -368,9 +368,9 @@ function getSubCategories($categoryId) {
         if ($cat['id'] == $categoryId && !empty($cat['subcategories'])) {
             $xml .= "  <subcategories>\n";
             foreach ($cat['subcategories'] as $sub) {
-                $xml .= "    <subCategory>\n";
-                $xml .= "      <subCatLabel>" . escapeXml($sub['id']) . "</subCatLabel>\n";
-                $xml .= "      <subCategory>" . escapeXml($sub['name']) . "</subCategory>\n";
+                $subId = escapeXml($sub['id']);
+                $xml .= "    <subCategory id=\"$subId\">\n";
+                $xml .= "      <subCatLabel>" . escapeXml($sub['name']) . "</subCatLabel>\n";
                 $xml .= "    </subCategory>\n";
             }
             $xml .= "  </subcategories>\n";
