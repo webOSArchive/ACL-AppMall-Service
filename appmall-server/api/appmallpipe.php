@@ -303,6 +303,11 @@ function buildProductXml($app, $detailed = false) {
     $xml .= "    <downloadSize>" . escapeXml($app['size'] ?? '') . "</downloadSize>\n";
     $xml .= "    <InternalProductName>" . escapeXml($app['package_name'] ?? '') . "</InternalProductName>\n";
 
+    // Coverflow image (always include - needed for list display)
+    $screenshots = $app['screenshots'] ?? [];
+    $cfUrl = $screenshots[0] ?? $app['icon_url'] ?? '';
+    $xml .= "    <CFScreenshotURL>" . escapeXml($cfUrl) . "</CFScreenshotURL>\n";
+
     if ($detailed) {
         $xml .= "    <longDescription>" . escapeXml($app['long_description'] ?? $app['short_description'] ?? '') . "</longDescription>\n";
         $xml .= "    <longFeatures>" . escapeXml($app['features'] ?? '') . "</longFeatures>\n";
@@ -310,17 +315,13 @@ function buildProductXml($app, $detailed = false) {
         $xml .= "    <FreeTrialURL>" . escapeXml($app['trial_url'] ?? '') . "</FreeTrialURL>\n";
         $xml .= "    <YouTubeURL>" . escapeXml($app['youtube_url'] ?? '') . "</YouTubeURL>\n";
 
-        // Screenshots
-        $screenshots = $app['screenshots'] ?? [];
-        $xml .= "    <totalScreenshots>" . count($screenshots) . "</totalScreenshots>\n";
-        foreach ($screenshots as $i => $url) {
+        // Screenshots (only in detailed view)
+        $detailScreenshots = $app['screenshots'] ?? [];
+        $xml .= "    <totalScreenshots>" . count($detailScreenshots) . "</totalScreenshots>\n";
+        foreach ($detailScreenshots as $i => $url) {
             $num = $i + 1;
             $xml .= "    <screenshot$num>" . escapeXml($url) . "</screenshot$num>\n";
         }
-
-        // Coverflow image (use first screenshot or icon)
-        $cfUrl = $screenshots[0] ?? $app['icon_url'] ?? '';
-        $xml .= "    <CFScreenshotURL>" . escapeXml($cfUrl) . "</CFScreenshotURL>\n";
     }
 
     $xml .= "  </product>\n";
