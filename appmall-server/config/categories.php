@@ -47,7 +47,7 @@ $CATEGORIES = [
 
     [
         'id' => 'media',
-        'name' => 'Media & Entertainment',
+        'name' => 'Media',
         'icon' => $BASE_URL . '/images/cat-media.png',
         'subcategories' => [
             ['id' => 'video-players', 'name' => 'Video Players'],
