@@ -1,15 +1,41 @@
-## AppMall Server
+# CLAUDE.md
 
-The Android Compatibility Layer for webOS bundles an Android app called "AppMall" for discovering and downloading apps. The original OpenMobile servers are dead.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-**Reverse engineering completed** - see `AppMall-API.md` for full API documentation:
-- API endpoint: `https://api.openmobileappmall.com/appmallpipe.php`
-- Format: HTTP POST, XML responses
-- Key modules: `allprods`, `browsecategories`, `pd`, `search`, `fs`, `bss`
+## Project Overview
 
-A mock PHP server was created and moved to a separate repository for hosting at `openmobileappmall.com`.
+AppMall is a revival server for the OpenMobile AppMall app bundled with ACL (Android Compatibility Layer) on HP TouchPad. The original servers are dead; this project provides a mock PHP server that responds to the app's API requests.
 
-**Files in this repo:**
-- `AppMall-API.md` - Complete API documentation
-- `appmall-server` - A Reverse-engineered implementation of the API
+## Architecture
 
+The server is a simple PHP application:
+- `appmall-server/api/appmallpipe.php` - Main API endpoint handling all module requests
+- `appmall-server/config/apps.php` - App catalog (add apps here)
+- `appmall-server/config/categories.php` - Category definitions
+
+**Request flow**: The AppMall Android app POSTs to `/appmallpipe.php` with a `module` parameter. The server routes the request and returns XML responses.
+
+**Key modules**: `allprods`, `browsecategories`, `pd` (product details), `search`, `fs` (free software), `bss` (best sellers)
+
+## Testing the API
+
+```bash
+# Test locally (requires PHP server running)
+curl -X POST http://localhost/appmallpipe.php -d "module=allprods&Page=1"
+curl -X POST http://localhost/appmallpipe.php -d "module=browsecategories"
+curl -X POST http://localhost/appmallpipe.php -d "module=search&sString=firefox"
+curl -X POST http://localhost/appmallpipe.php -d "module=pd&Pid=opera-mini"
+```
+
+## Adding Apps
+
+Edit `appmall-server/config/apps.php`. Required fields per app:
+- `id`, `package_name`, `name`, `short_description`, `version`, `price`, `rating`, `publisher`, `size`
+- `icon_url`, `download_url`, `category_id`
+- `tags` array: `featured`, `new`, `bestseller` control which listings the app appears in
+
+Upload APKs to `/apps/` and icons to `/images/`.
+
+## Deployment
+
+Requires Apache with mod_rewrite, PHP 7.0+, and SSL certificate. Point `api.openmobileappmall.com` DNS to your server. See `appmall-server/README.md` for full deployment instructions.
