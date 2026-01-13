@@ -41,8 +41,24 @@ switch ($module) {
         echo getProductsByTag('new', $page, $itemsPerPage);
         break;
 
-    case 'bss': // Best sellers
-        echo getProductsByTag('bestseller', $page, $itemsPerPage);
+    case 'bss': // Best sellers - MINIMAL TEST
+        echo '<?xml version="1.0" encoding="UTF-8"?>
+<results>
+<module>bss</module>
+<page>1</page>
+<moreAvailable>No</moreAvailable>
+<product id="test1">
+<productName>Test App</productName>
+<shortDescription>Test description</shortDescription>
+<price>0.00</price>
+<usersRating>5</usersRating>
+<thumbnail>https://api.openmobileappmall.com/images/es-file-explorer-icon.png</thumbnail>
+<version>1.0</version>
+<PublisherName>Test Publisher</PublisherName>
+<downloadSize>1 MB</downloadSize>
+<InternalProductName>com.test.app</InternalProductName>
+</product>
+</results>';
         break;
 
     case 'fs': // Free software
