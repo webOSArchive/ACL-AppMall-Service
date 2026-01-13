@@ -32,45 +32,32 @@ $logEntry = date('Y-m-d H:i:s') . " | Module: $module | Page: $page | Pid: $prod
 
 // Route to appropriate handler
 switch ($module) {
-    // Product listings
+    // MINIMAL TEST - All product listings return same test product
+    // NOTE: <response> is the wrapper, <results> contains the count (leaf element)
     case 'allprods':
-        echo getAllProducts($page, $itemsPerPage);
-        break;
-
-    case 'ns': // New software
-        echo getProductsByTag('new', $page, $itemsPerPage);
-        break;
-
-    case 'bss': // Best sellers - MINIMAL TEST
+    case 'ns':
+    case 'bss':
+    case 'fs':
+    case 'fts':
+    case 'dod':
         echo '<?xml version="1.0" encoding="UTF-8"?>
-<results>
-<module>bss</module>
+<response>
+<results>1</results>
 <page>1</page>
 <moreAvailable>No</moreAvailable>
-<product id="test1">
+<product id="1001">
 <productName>Test App</productName>
-<shortDescription>Test description</shortDescription>
+<shortDescription>A test application</shortDescription>
 <price>0.00</price>
 <usersRating>5</usersRating>
 <thumbnail>https://api.openmobileappmall.com/images/es-file-explorer-icon.png</thumbnail>
 <version>1.0</version>
-<PublisherName>Test Publisher</PublisherName>
+<PublisherName>Test</PublisherName>
 <downloadSize>1 MB</downloadSize>
 <InternalProductName>com.test.app</InternalProductName>
+<CFScreenshotURL>https://api.openmobileappmall.com/images/es-file-explorer-icon.png</CFScreenshotURL>
 </product>
-</results>';
-        break;
-
-    case 'fs': // Free software
-        echo getFreeProducts($page, $itemsPerPage);
-        break;
-
-    case 'fts': // Featured/Recommended
-        echo getProductsByTag('featured', $page, $itemsPerPage);
-        break;
-
-    case 'dod': // Deal of the day
-        echo getProductsByTag('featured', 1, 1);
+</response>';
         break;
 
     // Product details
@@ -180,7 +167,7 @@ function escapeXml($str) {
 }
 
 function emptyResults($module) {
-    return xmlHeader() . "<results><module>" . escapeXml($module) . "</module></results>";
+    return xmlHeader() . "<response><results>0</results></response>";
 }
 
 // ============================================================================
@@ -268,18 +255,18 @@ function buildProductListXml($module, $products, $page, $itemsPerPage) {
     $pageProducts = array_slice($products, $offset, $itemsPerPage);
     $moreAvailable = ($offset + count($pageProducts)) < $total ? 'Yes' : 'No';
 
+    // NOTE: <response> is wrapper, <results> is leaf element with count
     $xml = xmlHeader();
-    $xml .= "<results>\n";
-    $xml .= "  <module>" . escapeXml($module) . "</module>\n";
+    $xml .= "<response>\n";
+    $xml .= "  <results>$total</results>\n";
     $xml .= "  <page>$page</page>\n";
     $xml .= "  <moreAvailable>$moreAvailable</moreAvailable>\n";
-    $xml .= "  <totalProducts>$total</totalProducts>\n";
 
     foreach ($pageProducts as $app) {
         $xml .= buildProductXml($app, false);
     }
 
-    $xml .= "</results>";
+    $xml .= "</response>";
     return $xml;
 }
 
@@ -295,14 +282,13 @@ function getProductDetails($productId) {
     }
 
     if (!$product) {
-        return xmlHeader() . "<results><module>pd</module><error>Product not found</error></results>";
+        return xmlHeader() . "<response><error>Product not found</error></response>";
     }
 
     $xml = xmlHeader();
-    $xml .= "<results>\n";
-    $xml .= "  <module>pd</module>\n";
+    $xml .= "<response>\n";
     $xml .= buildProductXml($product, true);
-    $xml .= "</results>";
+    $xml .= "</response>";
     return $xml;
 }
 
@@ -352,8 +338,7 @@ function getCategories() {
     global $CATEGORIES;
 
     $xml = xmlHeader();
-    $xml .= "<results>\n";
-    $xml .= "  <module>browsecategories</module>\n";
+    $xml .= "<response>\n";
 
     foreach ($CATEGORIES as $cat) {
         $catId = escapeXml($cat['id']);
@@ -370,7 +355,7 @@ function getCategories() {
         $xml .= "  </category>\n";
     }
 
-    $xml .= "</results>";
+    $xml .= "</response>";
     return $xml;
 }
 
@@ -378,8 +363,7 @@ function getSubCategories($categoryId) {
     global $CATEGORIES;
 
     $xml = xmlHeader();
-    $xml .= "<results>\n";
-    $xml .= "  <module>browsesubcategories</module>\n";
+    $xml .= "<response>\n";
 
     foreach ($CATEGORIES as $cat) {
         if ($cat['id'] == $categoryId && !empty($cat['subcategories'])) {
@@ -395,7 +379,7 @@ function getSubCategories($categoryId) {
         }
     }
 
-    $xml .= "</results>";
+    $xml .= "</response>";
     return $xml;
 }
 
@@ -405,77 +389,70 @@ function getSubCategories($categoryId) {
 
 function getLocalization() {
     // Return empty localization - app will use built-in strings
-    return xmlHeader() . "<results><module>gettranslatedphrases</module></results>";
+    return xmlHeader() . "<response></response>";
 }
 
 function getCountries() {
     $xml = xmlHeader();
-    $xml .= "<results>\n";
-    $xml .= "  <module>availablecountries</module>\n";
+    $xml .= "<response>\n";
     $xml .= "  <country><description>United States</description><country>US</country></country>\n";
-    $xml .= "</results>";
+    $xml .= "</response>";
     return $xml;
 }
 
 function getLanguages() {
     $xml = xmlHeader();
-    $xml .= "<results>\n";
-    $xml .= "  <module>availablelanguages</module>\n";
+    $xml .= "<response>\n";
     $xml .= "  <language><languageid>en</languageid><languageName>English</languageName></language>\n";
-    $xml .= "</results>";
+    $xml .= "</response>";
     return $xml;
 }
 
 function getCurrencies() {
     $xml = xmlHeader();
-    $xml .= "<results>\n";
-    $xml .= "  <module>availablecurrencies</module>\n";
+    $xml .= "<response>\n";
     $xml .= "  <currency><currencyCode>USD</currencyCode><description>US Dollar</description><symbol>$</symbol></currency>\n";
-    $xml .= "</results>";
+    $xml .= "</response>";
     return $xml;
 }
 
 function getAgeRanges() {
     $xml = xmlHeader();
-    $xml .= "<results>\n";
-    $xml .= "  <module>availableageranges</module>\n";
+    $xml .= "<response>\n";
     $xml .= "  <agerange><description>Everyone</description><minage>0</minage><maxage>99</maxage></agerange>\n";
-    $xml .= "</results>";
+    $xml .= "</response>";
     return $xml;
 }
 
 function getPrivacyPolicy() {
     $xml = xmlHeader();
-    $xml .= "<results>\n";
-    $xml .= "  <module>privacypolicy</module>\n";
+    $xml .= "<response>\n";
     $xml .= "  <privacypolicy><![CDATA[";
     $xml .= "<h2>Privacy Policy</h2>";
     $xml .= "<p>This is a community-maintained archive of Android apps compatible with ACL (Application Compatibility Layer) for HP TouchPad.</p>";
     $xml .= "<p>We do not collect any personal information.</p>";
     $xml .= "]]></privacypolicy>\n";
-    $xml .= "</results>";
+    $xml .= "</response>";
     return $xml;
 }
 
 function getTermsAndConditions() {
     $xml = xmlHeader();
-    $xml .= "<results>\n";
-    $xml .= "  <module>termsandconditions</module>\n";
+    $xml .= "<response>\n";
     $xml .= "  <termsandconditions><![CDATA[";
     $xml .= "<h2>Terms of Service</h2>";
     $xml .= "<p>This service is provided as-is for archival and preservation purposes.</p>";
     $xml .= "<p>Apps are provided for personal use on ACL-enabled devices.</p>";
     $xml .= "]]></termsandconditions>\n";
-    $xml .= "</results>";
+    $xml .= "</response>";
     return $xml;
 }
 
 function noUpdateNeeded() {
     $xml = xmlHeader();
-    $xml .= "<results>\n";
-    $xml .= "  <module>checkversion</module>\n";
+    $xml .= "<response>\n";
     $xml .= "  <status>OK</status>\n";
     $xml .= "  <messageForUser></messageForUser>\n";
-    $xml .= "</results>";
+    $xml .= "</response>";
     return $xml;
 }
