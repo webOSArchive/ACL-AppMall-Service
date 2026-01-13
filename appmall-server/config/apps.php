@@ -185,50 +185,6 @@ $APP_CATALOG = [
     ],
 
     // =========================================================================
-    // PRODUCTIVITY
-    // =========================================================================
-
-    [
-        'id' => 'kingsoft-office',
-        'package_name' => 'cn.wps.moffice_eng',
-        'name' => 'Kingsoft Office',
-        'short_description' => 'View and edit Microsoft Office documents',
-        'long_description' => '<p>Kingsoft Office (now WPS Office) is a full office suite that can open, edit, and save Microsoft Office documents including Word, Excel, and PowerPoint files.</p>',
-        'features' => '<ul><li>Edit Word documents</li><li>Create spreadsheets</li><li>View presentations</li><li>PDF viewer</li><li>Cloud storage integration</li></ul>',
-        'version' => '5.3.1',
-        'price' => '0.00',
-        'rating' => 4,
-        'publisher' => 'Kingsoft',
-        'size' => '15.2 MB',
-        'icon_url' => $BASE_URL . '/images/kingsoft-office-icon.png',
-        'download_url' => $BASE_URL . '/apps/kingsoft-office-5.3.1.apk',
-        'screenshots' => [],
-        'category_id' => 'productivity',
-        'subcategory_id' => 'office',
-        'tags' => ['featured'],
-    ],
-
-    [
-        'id' => 'adobe-reader',
-        'package_name' => 'com.adobe.reader',
-        'name' => 'Adobe Reader',
-        'short_description' => 'Official PDF viewer from Adobe',
-        'long_description' => '<p>Adobe Reader is the official PDF viewer from Adobe. View, annotate, and sign PDF documents.</p>',
-        'features' => '<ul><li>View PDF files</li><li>Annotate documents</li><li>Fill forms</li><li>Night mode</li></ul>',
-        'version' => '11.2.0',
-        'price' => '0.00',
-        'rating' => 4,
-        'publisher' => 'Adobe',
-        'size' => '9.8 MB',
-        'icon_url' => $BASE_URL . '/images/adobe-reader-icon.png',
-        'download_url' => $BASE_URL . '/apps/adobe-reader-11.2.0.apk',
-        'screenshots' => [],
-        'category_id' => 'productivity',
-        'subcategory_id' => 'office',
-        'tags' => ['bestseller'],
-    ],
-
-    // =========================================================================
     // GAMES
     // =========================================================================
 

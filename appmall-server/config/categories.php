@@ -58,18 +58,6 @@ $CATEGORIES = [
     ],
 
     [
-        'id' => 'productivity',
-        'name' => 'Productivity',
-        'icon' => $BASE_URL . '/images/cat-productivity.png',
-        'subcategories' => [
-            ['id' => 'office', 'name' => 'Office'],
-            ['id' => 'notes', 'name' => 'Notes & Lists'],
-            ['id' => 'calendar', 'name' => 'Calendar'],
-            ['id' => 'finance', 'name' => 'Finance'],
-        ],
-    ],
-
-    [
         'id' => 'games',
         'name' => 'Games',
         'icon' => $BASE_URL . '/images/cat-games.png',
@@ -79,29 +67,6 @@ $CATEGORIES = [
             ['id' => 'arcade', 'name' => 'Arcade'],
             ['id' => 'strategy', 'name' => 'Strategy'],
             ['id' => 'racing', 'name' => 'Racing'],
-        ],
-    ],
-
-    [
-        'id' => 'education',
-        'name' => 'Education',
-        'icon' => $BASE_URL . '/images/cat-education.png',
-        'subcategories' => [
-            ['id' => 'learning', 'name' => 'Learning'],
-            ['id' => 'reference', 'name' => 'Reference'],
-            ['id' => 'books', 'name' => 'Books & Comics'],
-        ],
-    ],
-
-    [
-        'id' => 'lifestyle',
-        'name' => 'Lifestyle',
-        'icon' => $BASE_URL . '/images/cat-lifestyle.png',
-        'subcategories' => [
-            ['id' => 'health', 'name' => 'Health & Fitness'],
-            ['id' => 'weather', 'name' => 'Weather'],
-            ['id' => 'travel', 'name' => 'Travel'],
-            ['id' => 'shopping', 'name' => 'Shopping'],
         ],
     ],
 
