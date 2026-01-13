@@ -27,10 +27,8 @@ $searchString = $_POST['sString'] ?? $_GET['sString'] ?? '';
 
 // Log requests for debugging (optional)
 $logFile = __DIR__ . '/../logs/requests.log';
-if (is_writable(dirname($logFile))) {
-    $logEntry = date('Y-m-d H:i:s') . " | Module: $module | Page: $page | Pid: $productId | Search: $searchString\n";
-    file_put_contents($logFile, $logEntry, FILE_APPEND);
-}
+$logEntry = date('Y-m-d H:i:s') . " | Module: $module | Page: $page | Pid: $productId | Search: $searchString | GET: " . json_encode($_GET) . " | POST: " . json_encode($_POST) . " | URI: " . ($_SERVER['REQUEST_URI'] ?? '') . "\n";
+@file_put_contents($logFile, $logEntry, FILE_APPEND | LOCK_EX);
 
 // Route to appropriate handler
 switch ($module) {
