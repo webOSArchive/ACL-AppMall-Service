@@ -10,7 +10,7 @@
  * - subcategories: Array of subcategories
  */
 
-$BASE_URL = 'https://api.openmobileappmall.com';
+$BASE_URL = 'http://aclappmall.webosarchive.org';
 
 $CATEGORIES = [
 

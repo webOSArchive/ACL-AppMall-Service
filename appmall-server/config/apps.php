@@ -25,7 +25,7 @@
  */
 
 // Base URL for locally hosted files (change to your domain)
-$BASE_URL = 'https://api.openmobileappmall.com';
+$BASE_URL = 'http://aclappmall.webosarchive.org';
 
 $APP_CATALOG = [
 

@@ -1,2 +1,4 @@
-AppMall-decompiled/*
-AppMall-extracted/*
+AppMall-decompiled/
+AppMall-extracted/
+AppMall-smali/
+appmall-key.keystore
