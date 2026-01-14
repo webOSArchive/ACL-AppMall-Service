@@ -120,9 +120,17 @@ switch ($module) {
         echo getAgeRanges();
         break;
 
-    // User-related (return success/empty)
-    case 'verify':
+    // User login/details - accept any credentials
     case 'userdetails':
+        $email = $_POST['email'] ?? $_GET['email'] ?? 'user@example.com';
+        echo getUserDetails($email);
+        break;
+
+    case 'verify':
+        echo verifySuccess();
+        break;
+
+    // User-related (return success/empty)
     case 'userstats':
     case 'orderhistory':
     case 'productupdates':
@@ -450,6 +458,41 @@ function noUpdateNeeded() {
     $xml .= "<response>\n";
     $xml .= "  <status>OK</status>\n";
     $xml .= "  <messageForUser></messageForUser>\n";
+    $xml .= "</response>";
+    return $xml;
+}
+
+/**
+ * Returns user details - accepts any email/password combination
+ * This allows users to "log in" with any credentials for downloads
+ */
+function getUserDetails($email) {
+    $xml = xmlHeader();
+    $xml .= "<response>\n";
+    $xml .= "  <status>OK</status>\n";
+    $xml .= "  <statusDescription>Login successful</statusDescription>\n";
+    $xml .= "  <firstName>Archive</firstName>\n";
+    $xml .= "  <lastName>User</lastName>\n";
+    $xml .= "  <screenName>" . escapeXml($email) . "</screenName>\n";
+    $xml .= "  <address></address>\n";
+    $xml .= "  <address2></address2>\n";
+    $xml .= "  <city></city>\n";
+    $xml .= "  <state></state>\n";
+    $xml .= "  <country>US</country>\n";
+    $xml .= "  <zip></zip>\n";
+    $xml .= "  <accountType>0</accountType>\n";
+    $xml .= "</response>";
+    return $xml;
+}
+
+/**
+ * Returns success for email verification checks
+ */
+function verifySuccess() {
+    $xml = xmlHeader();
+    $xml .= "<response>\n";
+    $xml .= "  <status>OK</status>\n";
+    $xml .= "  <statusDescription>Verified</statusDescription>\n";
     $xml .= "</response>";
     return $xml;
 }
