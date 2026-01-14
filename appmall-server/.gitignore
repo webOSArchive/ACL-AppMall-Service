@@ -4,9 +4,5 @@ logs/*.log
 # APK files (too large for git)
 apps/*.apk
 
-# Image files (host separately)
-images/*.png
-images/*.jpg
-
 # Keep directory structure
 !.gitkeep
